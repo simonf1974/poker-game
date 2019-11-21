@@ -4,46 +4,36 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
 
 public class Holdem {
-    private List<Card> playerOneCards;
-    private List<Card> playerTwoCards;
+    public static Map<String, Integer> getWinner(List<String> playerHands, String tableHand) {
+        List<Integer> scores = playerHands.stream()
+                .map(playerHand -> getScoreOfBestFiveCardsFromSevenCards(getMergedHand(playerHand, tableHand)))
+                .collect(Collectors.toList());
 
-    public Holdem(List<Card> playerOneCards, List<Card> playerTwoCards, List<Card> tableCards) {
-        this.playerOneCards = playerOneCards;
-        this.playerOneCards.addAll(tableCards);
-        this.playerTwoCards = playerTwoCards;
-        this.playerTwoCards.addAll(tableCards);
-    }
-
-    public String getWinner() {
-        int playerOneScore = getScoreOfBestFiveCardsFromSevenCards(playerOneCards);
-        int playerTwoScore = getScoreOfBestFiveCardsFromSevenCards(playerTwoCards);
-
-        if (playerOneScore > playerTwoScore) {
-            return "Player 1 wins!";
-        } else if (playerTwoScore > playerOneScore) {
-            return "Player 2 wins!";
-        } else {
-            return "It's a draw!";
+        Map<String, Integer> playerScores = new HashMap<>();
+        for (int i = 0; i < playerHands.size(); i++) {
+            playerScores.put(playerHands.get(i), scores.get(i));
         }
+
+        return playerScores;
     }
 
-    public int getScoreOfBestFiveCardsFromSevenCards(List<Card> cards) {
+    public static List<Card> getMergedHand(String playerHand, String tableHand) {
+        return PokerHand.getCardsFromString(playerHand + " " + tableHand);
+    }
+
+    public static int getScoreOfBestFiveCardsFromSevenCards(List<Card> cards) {
         List<ArrayList> handCombinations =
                 Sets.combinations(cards.stream().collect(Collectors.toSet()), 5)
                 .stream()
                 .map(item -> new ArrayList(item)).collect(Collectors.toList());
 
-        PokerHand bestHand = null;
         int highestScoringHand = 0;
-
         for (List<Card> hand : handCombinations) {
-            PokerHand ph = new PokerHand(hand);
-            int score = ph.getScore();
+            int score = PokerHand.scoreHand(hand);
             if (score > highestScoringHand) {
                 highestScoringHand = score;
-                bestHand = ph;
             }
         }
-        return bestHand.getScore();
+        return highestScoringHand;
     }
 }

@@ -5,6 +5,28 @@ import static org.junit.Assert.*;
 public class CardTest {
 
     @Test
+    public void constructCardWithStrings() {
+        Card card = new Card("9C");
+        assertEquals(Card.CardType.NINE, card.getType());
+        assertEquals(Card.Suit.CLUBS, card.getSuit());
+        assertTrue(card.isValidCard());
+
+        card = new Card("10D");
+        assertEquals(Card.CardType.TEN, card.getType());
+        assertEquals(Card.Suit.DIAMONDS, card.getSuit());
+        assertTrue(card.isValidCard());
+
+        card = new Card("15D");
+        assertFalse(card.isValidCard());
+
+        card = new Card("9F");
+        assertFalse(card.isValidCard());
+
+        card = new Card("asdsadsa");
+        assertFalse(card.isValidCard());
+    }
+
+    @Test
     public void getValue() {
         Card card = new Card(Card.Suit.CLUBS, Card.CardType.ACE);
         assertEquals(card.getValue(), 14);
