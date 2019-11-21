@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
 
 public class Holdem {
-    public static Map<String, Integer> getWinner(List<String> playerHands, String tableHand) {
+    public static Map<String, Integer> getScores(List<String> playerHands, String tableHand) {
         List<Integer> scores = playerHands.stream()
                 .map(playerHand -> getScoreOfBestFiveCardsFromSevenCards(getMergedHand(playerHand, tableHand)))
                 .collect(Collectors.toList());
@@ -17,11 +17,11 @@ public class Holdem {
         return playerScores;
     }
 
-    public static List<Card> getMergedHand(String playerHand, String tableHand) {
-        return PokerHand.getCardsFromString(playerHand + " " + tableHand);
+    private static List<Card> getMergedHand(String playerHand, String tableHand) {
+        return PokerHandScorer.getCardsFromString(playerHand + " " + tableHand);
     }
 
-    public static int getScoreOfBestFiveCardsFromSevenCards(List<Card> cards) {
+    private static int getScoreOfBestFiveCardsFromSevenCards(List<Card> cards) {
         List<ArrayList> handCombinations =
                 Sets.combinations(cards.stream().collect(Collectors.toSet()), 5)
                 .stream()
@@ -29,7 +29,7 @@ public class Holdem {
 
         int highestScoringHand = 0;
         for (List<Card> hand : handCombinations) {
-            int score = PokerHand.scoreHand(hand);
+            int score = PokerHandScorer.scoreHand(hand);
             if (score > highestScoringHand) {
                 highestScoringHand = score;
             }

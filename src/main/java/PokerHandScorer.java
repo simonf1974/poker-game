@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class PokerHand {
+public class PokerHandScorer {
     public enum HandType {
         ROYAL_FLUSH(10),
         STRAIGHT_FLUSH(9),
@@ -46,15 +46,38 @@ public class PokerHand {
                 .collect(Collectors.toList());
     }
 
-    public static boolean hasSameSuit(List<Card> cards) {
+    public static int scoreHand(List<Card> cards) {
+        cards = cards.stream().filter(card -> card.isValidCard()).collect(Collectors.toList());
+        if (cards.size() != 5) return 0;
+        cards = sortHand(cards);
+
+        int level1Score = 16000000;
+        int level2Score = 800000;
+        int level3Score = 40000;
+        int level4Score = 2000;
+        int level5Score = 100;
+        int level6Score = 1;
+        List<Card.CardType> orderedCardTypes = getOrderedCardTypes(getGroupedCards(cards));
+
+        level1Score *= getHandType(cards).getValue();
+        level2Score *= orderedCardTypes.get(0).getValue();
+        if (orderedCardTypes.size() > 1) level3Score *= orderedCardTypes.get(1).getValue();
+        if (orderedCardTypes.size() > 2) level4Score *= orderedCardTypes.get(2).getValue();
+        if (orderedCardTypes.size() > 3) level5Score *= orderedCardTypes.get(3).getValue();
+        if (orderedCardTypes.size() > 4) level6Score *= orderedCardTypes.get(4).getValue();
+
+        return level1Score + level2Score + level3Score + level4Score + level5Score + level6Score;
+    }
+
+    static boolean hasSameSuit(List<Card> cards) {
         return cards.stream()
                 .map(Card::getSuit)
                 .collect(Collectors.toSet())
                 .size() == 1;
     }
 
-    public static boolean isStraight(List<Card> cards) {
-        cards = PokerHand.sortHand(cards);
+    static boolean isStraight(List<Card> cards) {
+        cards = PokerHandScorer.sortHand(cards);
         int previousCardValue = 0;
         for (Card card : cards) {
             if (previousCardValue == 0) previousCardValue = card.getValue() + 1;
@@ -64,12 +87,12 @@ public class PokerHand {
         return true;
     }
 
-    public static Map<Card.CardType, Long> getGroupedCards(List<Card> cards) {
+    static Map<Card.CardType, Long> getGroupedCards(List<Card> cards) {
         return cards.stream()
                 .collect(Collectors.groupingBy(Card::getType, Collectors.counting()));
     }
 
-    public static HandType getHandType(List<Card> cards) {
+    static HandType getHandType(List<Card> cards) {
         boolean isStraight = isStraight(cards);
         boolean hasSameSuit = hasSameSuit(cards);
         Map<Card.CardType, Long> groupedCards = getGroupedCards(cards);
@@ -98,13 +121,13 @@ public class PokerHand {
         }
     }
 
-    public static long getHighestGrouping(Map<Card.CardType, Long> groupedCards) {
+    static long getHighestGrouping(Map<Card.CardType, Long> groupedCards) {
         return groupedCards.entrySet().stream()
                 .max(Comparator.comparing(Map.Entry::getValue))
                 .get().getValue();
     }
 
-    public static List<Card.CardType> getOrderedCardTypes(Map<Card.CardType, Long> groupedCards) {
+    static List<Card.CardType> getOrderedCardTypes(Map<Card.CardType, Long> groupedCards) {
         return groupedCards.entrySet().stream()
                 .sorted((card1, card2) -> {
                     if (card1.getValue() == card2.getValue())
@@ -116,31 +139,8 @@ public class PokerHand {
                 .collect(Collectors.toList());
     }
 
-    public static List<Card> sortHand(List<Card> cards) {
+    private static List<Card> sortHand(List<Card> cards) {
         Collections.sort(cards, Comparator.comparingInt(Card::getValue).reversed());
         return cards;
-    }
-
-    public static int scoreHand(List<Card> cards) {
-        cards = cards.stream().filter(card -> card.isValidCard()).collect(Collectors.toList());
-        if (cards.size() != 5) return 0;
-        cards = sortHand(cards);
-
-        int level1Score = 16000000;
-        int level2Score = 800000;
-        int level3Score = 40000;
-        int level4Score = 2000;
-        int level5Score = 100;
-        int level6Score = 1;
-        List<Card.CardType> orderedCardTypes = getOrderedCardTypes(getGroupedCards(cards));
-
-        level1Score *= getHandType(cards).getValue();
-        level2Score *= orderedCardTypes.get(0).getValue();
-        if (orderedCardTypes.size() > 1) level3Score *= orderedCardTypes.get(1).getValue();
-        if (orderedCardTypes.size() > 2) level4Score *= orderedCardTypes.get(2).getValue();
-        if (orderedCardTypes.size() > 3) level5Score *= orderedCardTypes.get(3).getValue();
-        if (orderedCardTypes.size() > 4) level6Score *= orderedCardTypes.get(4).getValue();
-
-        return level1Score + level2Score + level3Score + level4Score + level5Score + level6Score;
     }
 }
