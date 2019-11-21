@@ -10,20 +10,29 @@ public class Card {
     }
 
     public enum CardType {
-        ACE,
-        KING,
-        QUEEN,
-        JACK,
-        TEN,
-        NINE,
-        EIGHT,
-        SEVEN,
-        SIX,
-        FIVE,
-        FOUR,
-        THREE,
-        TWO,
-        ONE;
+        ACE(14),
+        KING(13),
+        QUEEN(12),
+        JACK(11),
+        TEN(10),
+        NINE(9),
+        EIGHT(8),
+        SEVEN(7),
+        SIX(6),
+        FIVE(5),
+        FOUR(4),
+        THREE(3),
+        TWO(2);
+
+        private int value;
+
+        public int getValue() {
+            return  this.value;
+        }
+
+        CardType(int value) {
+            this.value = value;
+        }
     }
 
     public Card(Suit suit, CardType type) {
@@ -39,40 +48,8 @@ public class Card {
         return type;
     }
 
-    public static int getCardValue(CardType cardType) {
-        switch (cardType) {
-            case ACE:
-                return 14;
-            case KING:
-                return 13;
-            case QUEEN:
-                return 12;
-            case JACK:
-                return 11;
-            case TEN:
-                return 10;
-            case NINE:
-                return 9;
-            case EIGHT:
-                return 8;
-            case SEVEN:
-                return 7;
-            case SIX:
-                return 6;
-            case FIVE:
-                return 5;
-            case FOUR:
-                return 4;
-            case THREE:
-                return 3;
-            case TWO:
-                return 2;
-        }
-        return 0;
-    }
-
     public int getValue() {
-        return getCardValue(this.type);
+        return this.type.getValue();
     }
 
     @Override

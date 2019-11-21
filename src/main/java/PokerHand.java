@@ -6,17 +6,28 @@ import java.util.stream.Collectors;
 
 public class PokerHand {
     private List<Card> cards;
+
     public enum HandType {
-        ROYAL_FLUSH,
-        STRAIGHT_FLUSH,
-        FOUR_OF_A_KIND,
-        FULL_HOUSE,
-        FLUSH,
-        STRAIGHT,
-        THREE_OF_A_KIND,
-        TWO_PAIR,
-        PAIR,
-        HIGH_CARD
+        ROYAL_FLUSH(10),
+        STRAIGHT_FLUSH(9),
+        FOUR_OF_A_KIND(8),
+        FULL_HOUSE(7),
+        FLUSH(6),
+        STRAIGHT(5),
+        THREE_OF_A_KIND(4),
+        TWO_PAIR(3),
+        PAIR(2),
+        HIGH_CARD(1);
+
+        private int value;
+
+        public int getValue() {
+            return  this.value;
+        }
+
+        HandType(int value) {
+            this.value = value;
+        }
     }
 
     public PokerHand(List<Card> cards) {
@@ -89,39 +100,12 @@ public class PokerHand {
         return groupedCards.entrySet().stream()
                 .sorted((card1, card2) -> {
                     if (card1.getValue() == card2.getValue())
-                        return Card.getCardValue(card2.getKey()) - Card.getCardValue(card1.getKey());
+                        return card2.getKey().getValue() - card1.getKey().getValue();
                     else
                         return card2.getValue().intValue() - card1.getValue().intValue();
                 })
                 .map(item -> item.getKey())
                 .collect(Collectors.toList());
-    }
-
-    public int getHandTypeValue() {
-        HandType handType = getHandType();
-        switch (handType) {
-            case ROYAL_FLUSH:
-                return 10;
-            case STRAIGHT_FLUSH:
-                return 9;
-            case FOUR_OF_A_KIND:
-                return 8;
-            case FULL_HOUSE:
-                return  7;
-            case FLUSH:
-                return 6;
-            case STRAIGHT:
-                return 5;
-            case THREE_OF_A_KIND:
-                return  4;
-            case TWO_PAIR:
-                return 3;
-            case PAIR:
-                return 2;
-            case HIGH_CARD:
-                return  1;
-        }
-        return 0;
     }
 
     public int getScore() {
@@ -133,12 +117,12 @@ public class PokerHand {
         int level6Score = 1;
         List<Card.CardType> orderedCardTypes = getOrderedCardTypes(getGroupedCards());
 
-        level1Score *= getHandTypeValue();
-        level2Score *= Card.getCardValue(orderedCardTypes.get(0));
-        if (orderedCardTypes.size() > 1) level3Score *= Card.getCardValue(orderedCardTypes.get(1));
-        if (orderedCardTypes.size() > 2) level4Score *= Card.getCardValue(orderedCardTypes.get(2));
-        if (orderedCardTypes.size() > 3) level5Score *= Card.getCardValue(orderedCardTypes.get(3));
-        if (orderedCardTypes.size() > 4) level6Score *= Card.getCardValue(orderedCardTypes.get(4));
+        level1Score *= getHandType().getValue();
+        level2Score *= orderedCardTypes.get(0).getValue();
+        if (orderedCardTypes.size() > 1) level3Score *= orderedCardTypes.get(1).getValue();
+        if (orderedCardTypes.size() > 2) level4Score *= orderedCardTypes.get(2).getValue();
+        if (orderedCardTypes.size() > 3) level5Score *= orderedCardTypes.get(3).getValue();
+        if (orderedCardTypes.size() > 4) level6Score *= orderedCardTypes.get(4).getValue();
 
         return level1Score + level2Score + level3Score + level4Score + level5Score + level6Score;
     }
