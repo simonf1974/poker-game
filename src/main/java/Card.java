@@ -66,7 +66,7 @@ public class Card {
         this.suit = suitMapper.get(card.substring(card.length()-1));
         if (this.suit == null) {
             this.suit = suitMapper.get(card.substring(0, 1));
-            this.rank = cardValueMapper.get(card.substring(1, card.length()));
+            this.rank = cardValueMapper.get(card.substring(1));
         } else {
             this.rank = cardValueMapper.get(card.substring(0, card.length()-1));
         }

@@ -1,6 +1,9 @@
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.Assert.assertFalse;
 
 public class HandTest {
     @Test
@@ -34,12 +37,12 @@ public class HandTest {
     @Test
     public void isStraight() {
         assertFalse(new Hand("AD KS 3D 3D AD").isStraight());
-        assertTrue(new Hand("10D 9S 6D 7D 8D").isStraight());
+        assertThat(new Hand("10D 9S 6D 7D 8D").isStraight()).isTrue();
     }
 
     @Test
     public void getOccurrencesOfHighestOccurringRank() {
-        assertEquals(3, new Hand("AC AS AD 3D 3C").getOccurrencesOfHighestOccurringRank());
+        assertThat(new Hand("AC AS AD 3D 3C").getOccurrencesOfHighestOccurringRank()).isEqualTo(3);
     }
 
 

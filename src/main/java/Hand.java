@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toSet;
+
 public class Hand {
     private List<Card> cards;
 
@@ -41,19 +45,19 @@ public class Hand {
 
     public Map<Card.CardRank, Long> getRankVarieties() {
         return cards.stream()
-                .collect(Collectors.groupingBy(Card::getRank, Collectors.counting()));
+                .collect(groupingBy(Card::getRank, Collectors.counting()));
     }
 
     public long getOccurrencesOfHighestOccurringRank() {
         return getRankVarieties().entrySet().stream()
-                .max(Comparator.comparing(Map.Entry::getValue))
+                .max(comparing(Map.Entry::getValue))
                 .get().getValue();
     }
 
     public List<Card.CardRank> getRanksInOrderOfImportance() {
         return getRankVarieties().entrySet().stream()
                 .sorted((card1, card2) -> {
-                    if (card1.getValue() == card2.getValue())
+                    if (card1.getValue().equals(card2.getValue()))
                         return card2.getKey().getValue() - card1.getKey().getValue();
                     else
                         return card2.getValue().intValue() - card1.getValue().intValue();
@@ -65,7 +69,7 @@ public class Hand {
     public boolean hasSameSuit() {
         return cards.stream()
                 .map(Card::getSuit)
-                .collect(Collectors.toSet())
+                .collect(toSet())
                 .size() == 1;
     }
 
