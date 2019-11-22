@@ -1,3 +1,4 @@
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 
 import java.util.Collections;
@@ -18,8 +19,8 @@ public class Hand {
     }
 
     public void setCards(List<Card> cards) {
-        Collections.sort(cards, Comparator.comparingInt(Card::getCardValue).reversed());
         cards = cards.stream().filter(card -> card.isValidCard()).collect(Collectors.toList());
+        Collections.sort(cards, Comparator.comparingInt(Card::getCardValue).reversed());
         this.cards = cards;
     }
 
@@ -29,7 +30,7 @@ public class Hand {
 
     public static List<Card> getCardsFromString(String cards) {
         return Splitter
-                .on(" ")
+                .on(CharMatcher.anyOf(";,-/:|.{}[]<># "))
                 .trimResults()
                 .omitEmptyStrings()
                 .splitToList(cards)

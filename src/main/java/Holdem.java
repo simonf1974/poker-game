@@ -1,10 +1,22 @@
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Sets;
 
 public class Holdem {
-    public static Map<String, Integer> getScores(List<String> playerHands, String tableHand) {
+    public static String getFormattedScores(String tableHand, String... playerHands) {
+        Map<String, Integer> scores = getScores(tableHand, playerHands);
+        return scores.toString();
+    }
+
+    public static Map<String, Integer> getScores(String tableHand, String... playerHands) {
+        return getScores(tableHand, Arrays.asList(playerHands));
+    }
+
+    public static Map<String, Integer> getScores(String tableHand, List<String> playerHands) {
         List<Integer> scores = playerHands.stream()
                 .map(playerHand -> getScoreOfBestFiveCardsFromSevenCards(new Hand(playerHand + " " + tableHand)))
                 .collect(Collectors.toList());

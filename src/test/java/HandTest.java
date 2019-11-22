@@ -10,6 +10,9 @@ public class HandTest {
         assertEquals(Card.Suit.DIAMONDS, hand.getCards().get(0).getSuit());
         assertEquals(Card.CardRank.NINE, hand.getCards().get(1).getRank());
         assertEquals(Card.Suit.SPADES, hand.getCards().get(1).getSuit());
+
+        hand = new Hand("./   9S/.-    D10  {}[]4H # 15H");
+        assertTrue(hand.getSize() == 3);
     }
 
     @Test
@@ -19,7 +22,7 @@ public class HandTest {
     }
 
     @Test
-    public void getGroupedCards() {
+    public void getRankVarieties() {
         assertEquals(new Hand("AD KS 3D 3D AD").getRankVarieties().get(Card.CardRank.THREE).intValue(), 2);
         assertEquals(new Hand("AD KS 3D 3D AD").getRankVarieties().get(Card.CardRank.ACE).intValue(), 2);
         assertEquals(new Hand("AD KS 3D 3D AD").getRankVarieties().get(Card.CardRank.KING).intValue(), 1);
@@ -35,13 +38,13 @@ public class HandTest {
     }
 
     @Test
-    public void getHighestGrouping() {
+    public void getOccurrencesOfHighestOccurringRank() {
         assertEquals(3, new Hand("AC AS AD 3D 3C").getOccurrencesOfHighestOccurringRank());
     }
 
 
     @Test
-    public void getOrderedCardTypes() {
+    public void getRanksInOrderOfImportance() {
         assertEquals("[TWO, ACE, THREE]", new Hand("AD 3C 2C 2D").getRanksInOrderOfImportance().toString());
         assertEquals("[THREE, TWO, ACE]", new Hand("AD 3C 3D 2D 2H").getRanksInOrderOfImportance().toString());
         assertEquals("[THREE, TWO]", new Hand("3D 3C 3H 2D 2H").getRanksInOrderOfImportance().toString());

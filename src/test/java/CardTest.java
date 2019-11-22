@@ -24,6 +24,17 @@ public class CardTest {
 
         card = new Card("asdsadsa");
         assertFalse(card.isValidCard());
+
+        card = new Card("D10");
+        assertEquals(Card.CardRank.TEN, card.getRank());
+        assertEquals(Card.Suit.DIAMONDS, card.getSuit());
+        assertTrue(card.isValidCard());
+
+        card = new Card("D15");
+        assertFalse(card.isValidCard());
+
+        card = new Card("H9");
+        assertTrue(card.isValidCard());
     }
 
     @Test
@@ -57,7 +68,7 @@ public class CardTest {
     }
 
     @Test
-    public void getCardTypeValue() {
+    public void getCardRankValue() {
         Card card = new Card(Card.Suit.CLUBS, Card.CardRank.ACE);
         assertEquals(card.getRank().getValue(), 14);
         card = new Card(Card.Suit.CLUBS, Card.CardRank.KING);

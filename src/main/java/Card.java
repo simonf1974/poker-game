@@ -63,8 +63,13 @@ public class Card {
             .build();
 
     public Card(String card) {
-        this.rank = cardValueMapper.get(card.substring(0, card.length()-1));
         this.suit = suitMapper.get(card.substring(card.length()-1));
+        if (this.suit == null) {
+            this.suit = suitMapper.get(card.substring(0, 1));
+            this.rank = cardValueMapper.get(card.substring(1, card.length()));
+        } else {
+            this.rank = cardValueMapper.get(card.substring(0, card.length()-1));
+        }
     }
 
     public Card(Suit suit, CardRank rank) {
