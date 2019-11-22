@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Card {
     private Suit suit;
-    private CardType type;
+    private CardRank rank;
 
     public enum Suit {
         HEARTS,
@@ -13,7 +13,7 @@ public class Card {
         DIAMONDS
     }
 
-    public enum CardType {
+    public enum CardRank {
         ACE(14),
         KING(13),
         QUEEN(12),
@@ -34,7 +34,7 @@ public class Card {
             return  this.value;
         }
 
-        CardType(int value) {
+        CardRank(int value) {
             this.value = value;
         }
     }
@@ -46,53 +46,53 @@ public class Card {
             .put("S", Suit.SPADES)
             .build();
 
-    private Map<String, CardType> cardTypeMapper = ImmutableMap.<String, CardType> builder()
-            .put("A", CardType.ACE)
-            .put("K", CardType.KING)
-            .put("Q", CardType.QUEEN)
-            .put("J", CardType.JACK)
-            .put("10", CardType.TEN)
-            .put("9", CardType.NINE)
-            .put("8", CardType.EIGHT)
-            .put("7", CardType.SEVEN)
-            .put("6", CardType.SIX)
-            .put("5", CardType.FIVE)
-            .put("4", CardType.FOUR)
-            .put("3", CardType.THREE)
-            .put("2", CardType.TWO)
+    private Map<String, CardRank> cardValueMapper = ImmutableMap.<String, CardRank> builder()
+            .put("A", CardRank.ACE)
+            .put("K", CardRank.KING)
+            .put("Q", CardRank.QUEEN)
+            .put("J", CardRank.JACK)
+            .put("10", CardRank.TEN)
+            .put("9", CardRank.NINE)
+            .put("8", CardRank.EIGHT)
+            .put("7", CardRank.SEVEN)
+            .put("6", CardRank.SIX)
+            .put("5", CardRank.FIVE)
+            .put("4", CardRank.FOUR)
+            .put("3", CardRank.THREE)
+            .put("2", CardRank.TWO)
             .build();
 
     public Card(String card) {
-        this.type = cardTypeMapper.get(card.substring(0, card.length()-1));
+        this.rank = cardValueMapper.get(card.substring(0, card.length()-1));
         this.suit = suitMapper.get(card.substring(card.length()-1));
     }
 
-    public Card(Suit suit, CardType type) {
+    public Card(Suit suit, CardRank rank) {
         this.suit = suit;
-        this.type = type;
+        this.rank = rank;
     }
 
     public boolean isValidCard() {
-        return type != null && suit !=null;
+        return rank != null && suit !=null;
     }
 
     public Suit getSuit() {
         return suit;
     }
 
-    public CardType getType() {
-        return type;
+    public CardRank getRank() {
+        return rank;
     }
 
-    public int getValue() {
-        return this.type.getValue();
+    public int getCardValue() {
+        return this.rank.getValue();
     }
 
     @Override
     public String toString() {
         return "Card{" +
                 "suit=" + suit +
-                ", type=" + type +
+                ", type=" + rank +
                 '}';
     }
 }

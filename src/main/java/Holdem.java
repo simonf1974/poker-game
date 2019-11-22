@@ -6,7 +6,7 @@ import com.google.common.collect.Sets;
 public class Holdem {
     public static Map<String, Integer> getScores(List<String> playerHands, String tableHand) {
         List<Integer> scores = playerHands.stream()
-                .map(playerHand -> getScoreOfBestFiveCardsFromSevenCards(getMergedHand(playerHand, tableHand)))
+                .map(playerHand -> getScoreOfBestFiveCardsFromSevenCards(new Hand(playerHand + " " + tableHand)))
                 .collect(Collectors.toList());
 
         Map<String, Integer> playerScores = new HashMap<>();
@@ -17,19 +17,15 @@ public class Holdem {
         return playerScores;
     }
 
-    private static List<Card> getMergedHand(String playerHand, String tableHand) {
-        return PokerHandScorer.getCardsFromString(playerHand + " " + tableHand);
-    }
-
-    private static int getScoreOfBestFiveCardsFromSevenCards(List<Card> cards) {
+    private static int getScoreOfBestFiveCardsFromSevenCards(Hand hand) {
         List<ArrayList> handCombinations =
-                Sets.combinations(cards.stream().collect(Collectors.toSet()), 5)
+                Sets.combinations(hand.getCards().stream().collect(Collectors.toSet()), 5)
                 .stream()
                 .map(item -> new ArrayList(item)).collect(Collectors.toList());
 
         int highestScoringHand = 0;
-        for (List<Card> hand : handCombinations) {
-            int score = PokerHandScorer.scoreHand(hand);
+        for (List<Card> h : handCombinations) {
+            int score = HandScorer.scoreHand(h);
             if (score > highestScoringHand) {
                 highestScoringHand = score;
             }
