@@ -1,3 +1,6 @@
+package io.nology.poker.engine;
+
+import io.nology.poker.engine.Card;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

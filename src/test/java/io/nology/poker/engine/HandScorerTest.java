@@ -1,4 +1,9 @@
+package io.nology.poker.engine;
+
+import io.nology.poker.engine.Hand;
+import io.nology.poker.engine.HandScorer;
 import org.junit.Test;
+import static io.nology.poker.engine.HandScorer.HandType.*;
 
 import static org.junit.Assert.*;
 
@@ -35,17 +40,17 @@ public class HandScorerTest {
 
     @Test
     public void getHandType() {
-        assertEquals(HandScorer.HandType.TWO_PAIR, HandScorer.getHandType(new Hand("AD KS 3D 3D AD")));
-        assertEquals(HandScorer.HandType.ROYAL_FLUSH, HandScorer.getHandType(new Hand("10D AD KD JD QD")));
-        assertEquals(HandScorer.HandType.STRAIGHT_FLUSH, HandScorer.getHandType(new Hand("10D 9D KD JD QD")));
-        assertEquals(HandScorer.HandType.FOUR_OF_A_KIND, HandScorer.getHandType(new Hand("10S AD 10C 10H 10D")));
-        assertEquals(HandScorer.HandType.FULL_HOUSE, HandScorer.getHandType(new Hand("10S 7D 10C 10H 7C")));
-        assertEquals(HandScorer.HandType.FLUSH, HandScorer.getHandType(new Hand("2D AD KD JD QD")));
-        assertEquals(HandScorer.HandType.STRAIGHT, HandScorer.getHandType(new Hand("2S 5D 4D 3D 6D")));
-        assertEquals(HandScorer.HandType.THREE_OF_A_KIND, HandScorer.getHandType(new Hand("10C 10D KD 10D QD")));
-        assertEquals(HandScorer.HandType.TWO_PAIR, HandScorer.getHandType(new Hand("10D AC KD 10S KC")));
-        assertEquals(HandScorer.HandType.PAIR, HandScorer.getHandType(new Hand("10C 10D KD JD QD")));
-        assertEquals(HandScorer.HandType.HIGH_CARD, HandScorer.getHandType(new Hand("10D 2C KD 5D QD")));
+        assertEquals(TWO_PAIR, HandScorer.getHandType(new Hand("AD KS 3D 3D AD")));
+        assertEquals(ROYAL_FLUSH, HandScorer.getHandType(new Hand("10D AD KD JD QD")));
+        assertEquals(STRAIGHT_FLUSH, HandScorer.getHandType(new Hand("10D 9D KD JD QD")));
+        assertEquals(FOUR_OF_A_KIND, HandScorer.getHandType(new Hand("10S AD 10C 10H 10D")));
+        assertEquals(FULL_HOUSE, HandScorer.getHandType(new Hand("10S 7D 10C 10H 7C")));
+        assertEquals(FLUSH, HandScorer.getHandType(new Hand("2D AD KD JD QD")));
+        assertEquals(STRAIGHT, HandScorer.getHandType(new Hand("2S 5D 4D 3D 6D")));
+        assertEquals(THREE_OF_A_KIND, HandScorer.getHandType(new Hand("10C 10D KD 10D QD")));
+        assertEquals(TWO_PAIR, HandScorer.getHandType(new Hand("10D AC KD 10S KC")));
+        assertEquals(PAIR, HandScorer.getHandType(new Hand("10C 10D KD JD QD")));
+        assertEquals(HIGH_CARD, HandScorer.getHandType(new Hand("10D 2C KD 5D QD")));
     }
 
     @Test

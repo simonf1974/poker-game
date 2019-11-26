@@ -1,3 +1,5 @@
+package io.nology.poker.engine;
+
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 
