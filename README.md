@@ -10,4 +10,4 @@ I built this project based on a high level remit to write a set of Java classes 
 
 ## Screenshot
 
-![Screenshot](poker.png)
+![Screenshot](poker.PNG)
